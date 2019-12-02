@@ -1,26 +1,61 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import uuid from 'uuid'
+import Modal from "./components/modal";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const initialList = [
+    {
+        id: uuid(),
+        value: 'index 0'
+    }, {
+        id: uuid(),
+        value: 'index 1'
+    }, {
+        id: uuid(),
+        value: 'index 2'
+    }, {
+        id: uuid(),
+        value: 'index 3'
+    }
+]
+
+class App extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            isModalOpen: false
+        }
+        this.modalBtnRef = React.createRef()
+    }
+    showModal = () => {
+        if(!this.state.isModalOpen) {
+            this.setState({
+                isModalOpen: true
+            })
+        }
+    }
+
+    closeModal = () => {
+        this.setState({
+            isModalOpen: false
+        })
+    }
+
+  render() {
+    return (
+        <div className="wrapper">
+            <button
+                onClick={this.showModal} ref={this.modalBtnRef}>Show list in modal</button>
+            {this.state.isModalOpen &&
+            <Modal
+                modalBtnRef={this.modalBtnRef}
+                className="modal"
+                initialList={initialList}
+                closeModal={this.closeModal}/>
+            }
+        </div>
+    );
+  }
 }
 
 export default App;
